@@ -8,7 +8,3 @@ require (
 	github.com/imonke/monkebase v0.0.0-20200708145746-865112c49046
 	github.com/imonke/monketype v0.0.0-20200709034738-68ad017a3194
 )
-
-replace github.com/imonke/monketype => ../../monketype
-
-replace github.com/imonke/monkebase => ../../monkebase
