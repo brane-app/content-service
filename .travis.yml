@@ -1,0 +1,11 @@
+language: go
+services:
+    - mysql
+env:
+    - MONKEBASE_CONNECTION="travis@tcp(127.0.0.1)/test"
+    - FERROTHORN_HOST="http://localhost:8000"
+before_script:
+    - docker-compose -f docker-compose-ferrothorn.yml up -d
+script:
+    - go test ./... -count 1 -cover -coverprofile coverage.txt
+    - bash <(curl -s https://codecov.io/bash)
