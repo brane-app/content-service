@@ -2,8 +2,9 @@ language: go
 services:
     - mysql
 env:
-    - MONKEBASE_CONNECTION="travis@tcp(127.0.0.1)/test"
-    - FERROTHORN_HOST="http://localhost:8000"
+    global:
+        - MONKEBASE_CONNECTION="travis@tcp(127.0.0.1)/test"
+        - FERROTHORN_HOST="http://localhost:8000"
 before_script:
     - docker-compose -f docker-compose-ferrothorn.yml up -d
 script:
