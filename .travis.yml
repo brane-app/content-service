@@ -5,7 +5,8 @@ env:
     global:
         - MONKEBASE_CONNECTION="travis@tcp(127.0.0.1)/test"
         - FERROTHORN_HOST="http://localhost:8000"
-before_script:
+before_install:
+    - mysql -e 'CREATE DATABASE IF NOT EXISTS test' -h 127.0.0.1 -u root
     - docker-compose -f docker-compose-ferrothorn.yml up -d
 script:
     - go test ./... -count 1 -cover -coverprofile coverage.txt
