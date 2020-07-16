@@ -140,6 +140,7 @@ func postContent(request *http.Request) (code int, r_map map[string]interface{},
 
 	switch {
 	case err != nil:
+		return
 	case !ok:
 		code = 400
 	default:
@@ -147,5 +148,6 @@ func postContent(request *http.Request) (code int, r_map map[string]interface{},
 		r_map = map[string]interface{}{"content": created}
 	}
 
+	go monkebase.IncrementPostCount(author)
 	return
 }
