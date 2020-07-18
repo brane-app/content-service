@@ -8,12 +8,10 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
 	"os"
-	"strings"
 	"testing"
 )
 
@@ -190,7 +188,7 @@ func Test_postContent(test *testing.T) {
 			"requester",
 			user.ID,
 		))
-		request.ParseMultipartForm(MULTIPART_MEM_MAX)
+		request.ParseMultipartForm(4 << 2)
 
 		if code, r_map, err = postContent(request); err != nil {
 			test.Fatal(err)
@@ -242,9 +240,8 @@ func Test_postContent_badrequest(test *testing.T) {
 			"requester",
 			user.ID,
 		))
-		request.ParseMultipartForm(MULTIPART_MEM_MAX)
+		request.ParseMultipartForm(4 << 20)
 
-		// groudon defaults handles 400 bodies, no testing here
 		if code, _, err = postContent(request); err != nil {
 			test.Fatal(err)
 		}
@@ -252,125 +249,5 @@ func Test_postContent_badrequest(test *testing.T) {
 		if code != 400 {
 			test.Errorf("got code %d", code)
 		}
-	}
-}
-
-func Test_rejectBadAuth_blank(test *testing.T) {
-	var request *http.Request = new(http.Request)
-
-	var ok bool
-	var code int
-	var err error
-	if _, ok, code, _, err = rejectBadAuth(request); err != nil {
-		test.Fatal(err)
-	}
-
-	if ok {
-		test.Errorf("blank request got through")
-	}
-
-	if code != 401 {
-		test.Errorf("got code %d", code)
-	}
-}
-
-func Test_rejectBadAuth_invalid(test *testing.T) {
-	var request *http.Request = new(http.Request)
-	request.Header = make(http.Header)
-	request.Header.Add("Authorization", "foobar")
-
-	var ok bool
-	var code int
-	var err error
-	if _, ok, code, _, err = rejectBadAuth(request); err != nil {
-		test.Fatal(err)
-	}
-
-	if ok {
-		test.Errorf("invalid auth request got through")
-	}
-
-	if code != 401 {
-		test.Errorf("got code %d", code)
-	}
-}
-
-func Test_rejectBadAuth_badauth(test *testing.T) {
-	var request *http.Request = new(http.Request)
-	request.Header = make(http.Header)
-	request.Header.Add("Authorization", "Bearer foobar")
-
-	var ok bool
-	var code int
-	var err error
-	if _, ok, code, _, err = rejectBadAuth(request); err != nil {
-		test.Fatal(err)
-	}
-
-	if ok {
-		test.Errorf("bad auth request got through")
-	}
-
-	if code != 401 {
-		test.Errorf("got code %d", code)
-	}
-}
-
-func Test_rejectBadAuth(test *testing.T) {
-	var request *http.Request = new(http.Request)
-	request.Header = make(http.Header)
-	request.Header.Add("Authorization", "Bearer "+token)
-
-	var modified *http.Request
-	var ok bool
-	var err error
-	if modified, ok, _, _, err = rejectBadAuth(request); err != nil {
-		test.Fatal(err)
-	}
-
-	if !ok {
-		test.Errorf("ok request did not get through")
-	}
-
-	var owner string = modified.Context().Value("requester").(string)
-	if owner != user.ID {
-		test.Errorf("modified is not owned by %s, but by %s", user.ID, owner)
-	}
-}
-
-func Test_parseMultipart(test *testing.T) {
-	var request *http.Request = mustLocalMultipart("POST", "/", []byte("foobar"))
-
-	var ok bool
-	var err error
-	if _, ok, _, _, err = parseMultipart(request); err != nil {
-		test.Fatal(err)
-	}
-
-	if !ok {
-		test.Errorf("parseMultipart not ok")
-	}
-
-	if request.MultipartForm == nil {
-		test.Errorf("request was not multipart parsed")
-	}
-}
-
-func Test_parseMultipart_err(test *testing.T) {
-	var request *http.Request = new(http.Request)
-	request.Body = ioutil.NopCloser(strings.NewReader("nice"))
-
-	var ok bool
-	var err error
-	if _, ok, _, _, err = parseMultipart(request); err != nil {
-		test.Fatal(err)
-	}
-
-	if ok {
-		test.Errorf("parseMultipart is ok on empty request")
-	}
-
-	if request.MultipartForm != nil {
-		test.Errorf("request was somehow multipart parsed")
 	}
 }

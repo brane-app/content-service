@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gastrodon/groudon"
 	"github.com/imonke/monkebase"
+	"github.com/imonke/monkelib/middleware"
 
 	"log"
 	"net/http"
@@ -17,8 +18,8 @@ var (
 func main() {
 	monkebase.Connect(os.Getenv("MONKEBASE_CONNECTION"))
 	groudon.RegisterCatch(401, bad_auth)
-	groudon.RegisterMiddleware(rejectBadAuth)
-	groudon.RegisterMiddleware(parseMultipart)
+	groudon.RegisterMiddleware(middleware.MustAuth)
+	groudon.RegisterMiddleware(middleware.ParseMultipart)
 	groudon.RegisterHandler("POST", "^/$", postContent)
 	http.Handle("/", http.HandlerFunc(groudon.Route))
 	log.Fatal(http.ListenAndServe(":8000", nil))
