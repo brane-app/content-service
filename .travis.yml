@@ -9,10 +9,10 @@ before_install:
     - mysql -e 'CREATE DATABASE IF NOT EXISTS test' -h 127.0.0.1 -u root
     - docker-compose -f docker-compose-ferrothorn.yml up -d
 script:
-    - go test ./... -count 1 -cover -coverprofile coverage.txt
+    - go test ./... -count 1 -cover -coverprofile coverage.txt || travis_terminate 1;
     - bash <(curl -s https://codecov.io/bash)
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
     - docker build . -t gastrodon/imonke-content-create-service:"$TRAVIS_BRANCH"
     - docker push gastrodon/imonke-content-create-service:"$TRAVIS_BRANCH"
-    - if [ "$TRAVIS_BRANCH" = "master" ]; then docker tag gastrodon/imonke-content-create-service:"$TRAVIS_BRANCH" gastrodon/imonke-content-create-service:latest
-    - if [ "$TRAVIS_BRANCH" = "master" ]; then docker push gastrodon/imonke-content-create-service:latest
+    - docker tag gastrodon/imonke-content-create-service:"$TRAVIS_BRANCH" gastrodon/imonke-content-create-service:latest
+    - if [ "$TRAVIS_BRANCH" = "master" ]; then docker push gastrodon/imonke-content-create-service:latest; fi
