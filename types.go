@@ -1,5 +1,9 @@
 package main
 
+import (
+	"github.com/gastrodon/groudon"
+)
+
 type CreateContentBody struct {
 	Mime       string   `json:"mime"`
 	NSFW       bool     `json:"nsfw"`
@@ -7,12 +11,12 @@ type CreateContentBody struct {
 	Tags       []string `json:"tags"`
 }
 
-func (_ CreateContentBody) Types() (values map[string]string) {
-	values = map[string]string{
-		"mime":       "string",
-		"nsfw":       "bool",
-		"featurable": "bool",
-		"tags":       "[]string",
+func (_ CreateContentBody) Validators() (values map[string]func(interface{}) (bool, error)) {
+	values = map[string]func(interface{}) (bool, error){
+		"mime":       groudon.ValidString,
+		"nsfw":       groudon.ValidBool,
+		"featurable": groudon.ValidBool,
+		"tags":       groudon.ValidStringSlice,
 	}
 
 	return
