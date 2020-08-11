@@ -19,6 +19,7 @@ func main() {
 	monkebase.Connect(os.Getenv("MONKEBASE_CONNECTION"))
 	groudon.RegisterCatch(401, bad_auth)
 	groudon.RegisterMiddleware(middleware.MustAuth)
+	groudon.RegisterMiddleware(middleware.RejectBanned)
 	groudon.RegisterMiddleware(middleware.ParseMultipart)
 	groudon.RegisterHandler("POST", "^/$", postContent)
 	http.Handle("/", http.HandlerFunc(groudon.Route))
