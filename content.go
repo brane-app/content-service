@@ -99,6 +99,9 @@ func makeContent(data, file io.Reader, author string) (created monketype.Content
 		return
 	}
 
+	var inspectBuffer *bytes.Buffer = new(bytes.Buffer)
+	file = io.TeeReader(file, inspectBuffer)
+
 	var file_url string
 	if file_url, err = upload(file); err != nil {
 		return
