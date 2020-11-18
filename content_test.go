@@ -133,50 +133,41 @@ func Test_postContent(test *testing.T) {
 	var set []byte
 	var sets [][]byte = [][]byte{
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": false,
 			"nsfw":       false,
 			"tags":       []string{"some", "tags"},
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": false,
 			"nsfw":       true,
 			"tags":       []string{"some", "tags"},
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": true,
 			"nsfw":       false,
 			"tags":       []string{"some", "tags"},
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": true,
 			"nsfw":       true,
 			"tags":       []string{"some", "tags"},
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": true,
 			"nsfw":       true,
 			"tags":       []string{},
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": true,
 			"nsfw":       true,
 			"tags":       make([]string, 0),
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": true,
 			"nsfw":       true,
 			"tags":       nil,
 		}),
-		mustMarshal(map[string]interface{}{
-			"mime": "png",
-		}),
+		mustMarshal(map[string]interface{}{}),
 	}
 
 	var request *http.Request
@@ -219,15 +210,6 @@ func Test_postContent(test *testing.T) {
 func Test_postContent_badrequest(test *testing.T) {
 	var set []byte
 	var sets [][]byte = [][]byte{
-		mustMarshal(map[string]interface{}{
-			"featurable": true,
-			"nsfw":       true,
-			"tags":       []string{"tag"},
-		}),
-		mustMarshal(map[string]interface{}{
-			"featurable": true,
-			"nsfw":       true,
-		}),
 		[]byte("Why do they call him Donkey Kong if he's a gorilla"),
 		make([]byte, 0),
 	}
