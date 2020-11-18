@@ -86,7 +86,10 @@ func mustLocalMultipart(method, path string, data []byte) (request *http.Request
 		panic(err)
 	}
 
-	filePart.Write([]byte("haha yes I am a file"))
+	filePart.Write([]byte{
+		0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, // png file header
+		104, 97, 104, 97, 32, 121, 101, 115, 32, 73, 32, 97, 109, 32, 97, 32, 112, 110, 103, // haha yes I am a png
+	})
 	if err = writer.Close(); err != nil {
 		panic(err)
 	}

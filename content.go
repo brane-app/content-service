@@ -17,9 +17,15 @@ import (
 )
 
 var (
-	ferrothorn_host               = strings.TrimSuffix(os.Getenv("FERROTHORN_HOST"), "/")
-	ferrothorn_secret             = os.Getenv("FERROTHORN_SECRET")
-	requester         http.Client = http.Client{}
+	ferrothorn_host                   = strings.TrimSuffix(os.Getenv("FERROTHORN_HOST"), "/")
+	ferrothorn_secret                 = os.Getenv("FERROTHORN_SECRET")
+	requester         http.Client     = http.Client{}
+	allowed_mime      map[string]bool = map[string]bool{
+		"image/png":  true,
+		"image/jpg":  true,
+		"image/jpeg": true,
+		"image/webp": true,
+	}
 )
 
 func ferroRequest(sendable *http.Request) (response map[string]string, err error) {
@@ -99,18 +105,30 @@ func makeContent(data, file io.Reader, author string) (created monketype.Content
 		return
 	}
 
-	var inspectBuffer *bytes.Buffer = new(bytes.Buffer)
-	file = io.TeeReader(file, inspectBuffer)
+	var file_tee bytes.Buffer
+	file = io.TeeReader(file, &file_tee)
+
+	var file_bytes []byte = make([]byte, 512)
+	if _, err = file.Read(file_bytes); err != nil {
+		return
+	}
+
+	ioutil.ReadAll(file)
+
+	var mime string = http.DetectContentType(file_bytes)
+	if _, ok = allowed_mime[mime]; !ok {
+		return
+	}
 
 	var file_url string
-	if file_url, err = upload(file); err != nil {
+	if file_url, err = upload(&file_tee); err != nil {
 		return
 	}
 
 	created = monketype.NewContent(
 		file_url,
 		author,
-		body.Mime,
+		mime,
 		body.Tags,
 		body.Featurable,
 		body.NSFW,
