@@ -13,7 +13,6 @@ type CreateContentBody struct {
 
 func (_ CreateContentBody) Validators() (values map[string]func(interface{}) (bool, error)) {
 	values = map[string]func(interface{}) (bool, error){
-		"mime":       groudon.ValidString,
 		"nsfw":       groudon.ValidBool,
 		"featurable": groudon.ValidBool,
 		"tags":       groudon.ValidStringSlice,

@@ -86,7 +86,10 @@ func mustLocalMultipart(method, path string, data []byte) (request *http.Request
 		panic(err)
 	}
 
-	filePart.Write([]byte("haha yes I am a file"))
+	filePart.Write([]byte{
+		0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, // png file header
+		104, 97, 104, 97, 32, 121, 101, 115, 32, 73, 32, 97, 109, 32, 97, 32, 112, 110, 103, // haha yes I am a png
+	})
 	if err = writer.Close(); err != nil {
 		panic(err)
 	}
@@ -130,50 +133,41 @@ func Test_postContent(test *testing.T) {
 	var set []byte
 	var sets [][]byte = [][]byte{
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": false,
 			"nsfw":       false,
 			"tags":       []string{"some", "tags"},
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": false,
 			"nsfw":       true,
 			"tags":       []string{"some", "tags"},
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": true,
 			"nsfw":       false,
 			"tags":       []string{"some", "tags"},
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": true,
 			"nsfw":       true,
 			"tags":       []string{"some", "tags"},
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": true,
 			"nsfw":       true,
 			"tags":       []string{},
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": true,
 			"nsfw":       true,
 			"tags":       make([]string, 0),
 		}),
 		mustMarshal(map[string]interface{}{
-			"mime":       "png",
 			"featurable": true,
 			"nsfw":       true,
 			"tags":       nil,
 		}),
-		mustMarshal(map[string]interface{}{
-			"mime": "png",
-		}),
+		mustMarshal(map[string]interface{}{}),
 	}
 
 	var request *http.Request
@@ -216,15 +210,6 @@ func Test_postContent(test *testing.T) {
 func Test_postContent_badrequest(test *testing.T) {
 	var set []byte
 	var sets [][]byte = [][]byte{
-		mustMarshal(map[string]interface{}{
-			"featurable": true,
-			"nsfw":       true,
-			"tags":       []string{"tag"},
-		}),
-		mustMarshal(map[string]interface{}{
-			"featurable": true,
-			"nsfw":       true,
-		}),
 		[]byte("Why do they call him Donkey Kong if he's a gorilla"),
 		make([]byte, 0),
 	}
