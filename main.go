@@ -21,6 +21,7 @@ func main() {
 	groudon.RegisterMiddleware(middleware.MustAuth)
 	groudon.RegisterMiddleware(middleware.RejectBanned)
 	groudon.RegisterMiddleware(middleware.ParseMultipart)
+	groudon.RegisterMiddleware(transformBase64)
 	groudon.RegisterHandler("POST", "^/$", postContent)
 	http.Handle("/", http.HandlerFunc(groudon.Route))
 	log.Fatal(http.ListenAndServe(":8000", nil))
