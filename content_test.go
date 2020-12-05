@@ -21,8 +21,12 @@ const (
 )
 
 var (
-	user  monketype.User
-	token string
+	user     monketype.User
+	token    string
+	pngBytes []byte = []byte{
+		0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, // png file header
+		104, 97, 104, 97, 32, 121, 101, 115, 32, 73, 32, 97, 109, 32, 97, 32, 112, 110, 103, // haha yes I am a png
+	}
 )
 
 func ferroDelete(url string) (err error) {
@@ -50,11 +54,11 @@ func newOk(test *testing.T, content monketype.Content) {
 	}
 
 	if content.ViewCount != 0 {
-		test.Errorf("Too many repubs! %d", content.ViewCount)
+		test.Errorf("Too many views! %d", content.ViewCount)
 	}
 
 	if content.CommentCount != 0 {
-		test.Errorf("Too many repubs! %d", content.CommentCount)
+		test.Errorf("Too many comments! %d", content.CommentCount)
 	}
 
 	if content.Featured {
@@ -86,15 +90,12 @@ func mustLocalMultipart(method, path string, data []byte) (request *http.Request
 		panic(err)
 	}
 
-	filePart.Write([]byte{
-		0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, // png file header
-		104, 97, 104, 97, 32, 121, 101, 115, 32, 73, 32, 97, 109, 32, 97, 32, 112, 110, 103, // haha yes I am a png
-	})
+	filePart.Write(pngBytes)
 	if err = writer.Close(); err != nil {
 		panic(err)
 	}
 
-	if request, err = http.NewRequest(method, path, bytes.NewReader(body.Bytes())); err != nil {
+	if request, err = http.NewRequest(method, path, body); err != nil {
 		panic(err)
 	}
 
