@@ -59,3 +59,16 @@ func Test_transformBase64(test *testing.T) {
 		test.Errorf("file data mismatch, expected %s, got %s", pngBase64, file_bytes)
 	}
 }
+
+func Test_transformBase64_badFile(test *testing.T) {
+	var ok bool
+	var code int
+	var err error
+	if _, ok, code, _, err = transformBase64(mustLocalBase64("=")); err != nil {
+		test.Fatal(err)
+	}
+
+	if ok || code != 400 {
+		test.Errorf("response for = is ok, got code %d", code)
+	}
+}
