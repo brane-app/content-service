@@ -8,9 +8,14 @@ import (
 	"strings"
 )
 
+func pathSplit(it rune) (ok bool) {
+	ok = it == '/'
+	return
+}
+
 func getContent(request *http.Request) (code int, r_map map[string]interface{}, err error) {
-	var split []string = strings.Split(strings.TrimSuffix(request.URL.Path, "/"), "/")
-	var id string = split[len(split)-1]
+	var parts []string = strings.FieldsFunc(request.URL.Path, pathSplit)
+	var id string = parts[len(parts)-1]
 
 	var fetched monketype.Content
 	var exists bool
