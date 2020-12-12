@@ -15,6 +15,8 @@ github.com/imonke/monkebase v0.0.0-20200708145746-865112c49046 h1:v62gLTnMNKIugX
 github.com/imonke/monkebase v0.0.0-20200708145746-865112c49046/go.mod h1:pC6MDxSZVPb7RwklD6kSb88cfD6+xjnHUsir2Q21K9M=
 github.com/imonke/monkebase v0.0.0-20201112031310-8b05081cb292 h1:sMwUtT4hI4ki8fdabPGPMbufmD34D1ww/KSO564xIaM=
 github.com/imonke/monkebase v0.0.0-20201112031310-8b05081cb292/go.mod h1:ZfXu2Q+i8POwrgitRKY9YI2L+HeH7u2ZpGpBUdmlNgM=
+github.com/imonke/monkebase v0.0.0-20201212230209-6c87775a51b2 h1:88KH5+T+Z2MInFxCueAOW1PbSD6nQPuysCaxjsr2UNw=
+github.com/imonke/monkebase v0.0.0-20201212230209-6c87775a51b2/go.mod h1:ZfXu2Q+i8POwrgitRKY9YI2L+HeH7u2ZpGpBUdmlNgM=
 github.com/imonke/monketype v0.0.0-20200702003911-d46b79f825eb/go.mod h1:/6d6kpJ4zrDTyopAyygmuFmxxPDyxfnrxBkS2biIU9M=
 github.com/imonke/monketype v0.0.0-20200704082322-8bd39803870c h1:aIpkv4L0fjpAluXwUytA0+Gj31S14N6BI96lfZPU0Qc=
 github.com/imonke/monketype v0.0.0-20200704082322-8bd39803870c/go.mod h1:/6d6kpJ4zrDTyopAyygmuFmxxPDyxfnrxBkS2biIU9M=
