@@ -1,3 +1,7 @@
+git.gastrodon.io/imonke/monkebase v0.0.0-20201213065506-fa56cc5fe191 h1:j9F1PXr8VgadRx8LBWp3kERcvy7E4GBwui4RdGeJezo=
+git.gastrodon.io/imonke/monkebase v0.0.0-20201213065506-fa56cc5fe191/go.mod h1:/67JIA66siHa717mkbgahnFZs9m+XOn5TFNuuIwtOEg=
+git.gastrodon.io/imonke/monketype v0.0.0-20201213055509-5f764755b22d h1:6H3q6KguismcdYW8I6na/QZVYm+jfD49t8HlFcF0S+I=
+git.gastrodon.io/imonke/monketype v0.0.0-20201213055509-5f764755b22d/go.mod h1:caFw4qbdFJb/Sf+Y9MOyttX3SOo6aMLVsM6w6RJ78bM=
 github.com/gastrodon/groudon v0.0.0-20200705001222-75090f789024 h1:1fSSdjv1hBcC9ZR+LB/MKMfycr1cliK/FODcK6sskyg=
 github.com/gastrodon/groudon v0.0.0-20200705001222-75090f789024/go.mod h1:5pCqXI8gvquh7Lp7S3LOpUgQ32JXWdrIKums+zpPwjs=
 github.com/gastrodon/groudon v0.0.0-20201111174124-cf23fec3827b h1:eizxZ+w6I6azaQ7gFVsAG03z+vvvDh+UbzDWuTtDkPQ=

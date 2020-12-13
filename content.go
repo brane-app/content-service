@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/imonke/monkebase"
-	"github.com/imonke/monketype"
+	"git.gastrodon.io/imonke/monkebase"
+	"git.gastrodon.io/imonke/monketype"
 
 	"net/http"
 	"strings"
