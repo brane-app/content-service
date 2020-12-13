@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/imonke/monkelib/middleware"
+	"git.gastrodon.io/imonke/monkelib/middleware"
 
 	"bytes"
 	"encoding/base64"
