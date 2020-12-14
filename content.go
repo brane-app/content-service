@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/gastrodon/groudon"
 	"git.gastrodon.io/imonke/monkebase"
 	"git.gastrodon.io/imonke/monketype"
+	"github.com/gastrodon/groudon"
+	"github.com/google/uuid"
 
 	"bytes"
 	"encoding/json"
@@ -19,6 +20,7 @@ import (
 var (
 	ferrothorn_host                   = strings.TrimSuffix(os.Getenv("FERROTHORN_HOST"), "/")
 	ferrothorn_secret                 = os.Getenv("FERROTHORN_SECRET")
+	noFerrothorn                      = os.Getenv("NO_FERROTHORN") == "true"
 	requester         http.Client     = http.Client{}
 	allowed_mime      map[string]bool = map[string]bool{
 		"image/png":  true,
@@ -29,6 +31,11 @@ var (
 )
 
 func ferroRequest(sendable *http.Request) (response map[string]string, err error) {
+	if noFerrothorn {
+		response = map[string]string{"id": "no_ferrothorn_" + uuid.New().String()}
+		return
+	}
+
 	sendable.Header.Set("Authorization", ferrothorn_secret)
 
 	var http_response *http.Response
