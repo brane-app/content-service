@@ -1,0 +1,8 @@
+github.com/gastrodon/groudon v0.0.0-20201111174124-cf23fec3827b h1:eizxZ+w6I6azaQ7gFVsAG03z+vvvDh+UbzDWuTtDkPQ=
+github.com/gastrodon/groudon v0.0.0-20201111174124-cf23fec3827b/go.mod h1:5pCqXI8gvquh7Lp7S3LOpUgQ32JXWdrIKums+zpPwjs=
+github.com/google/uuid v1.1.2 h1:EVhdT+1Kseyi1/pUmXKaFxYsDNy9RQYkMWRH68J/W7Y=
+github.com/google/uuid v1.1.2/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/mitchellh/mapstructure v1.3.2 h1:mRS76wmkOn3KkKAyXDu42V+6ebnXWIztFSYGN7GeoRg=
+github.com/mitchellh/mapstructure v1.3.2/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
+github.com/mitchellh/mapstructure v1.4.0 h1:7ks8ZkOP5/ujthUsT07rNv+nkLXCQWKNHuwzOAesEks=
+github.com/mitchellh/mapstructure v1.4.0/go.mod h1:bFUtVrKA4DC2yAKiSyO/QUcy7e+RRV2QTWOzhPopBRo=
