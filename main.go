@@ -16,7 +16,7 @@ var (
 )
 
 func main() {
-	monkebase.Connect(os.Getenv("MONKEBASE_CONNECTION"))
+	monkebase.Connect(os.Getenv("DATABASE_CONNECTION"))
 	groudon.RegisterCatch(401, bad_auth)
 	groudon.RegisterMiddleware(middleware.MustAuth)
 	groudon.RegisterMiddleware(middleware.RejectBanned)
