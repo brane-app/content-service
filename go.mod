@@ -1,4 +1,4 @@
-module git.gastrodon.io/imonke/content-giver-service
+module github.com/brane-app/content-giver-service
 
 go 1.13
 
