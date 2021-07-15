@@ -1,4 +1,4 @@
-module git.gastrodon.io/imonke/content-create-service
+module github.com/brane-app/content-create-service
 
 go 1.13
 
