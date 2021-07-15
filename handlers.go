@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/brane-app/tools-library/library"
+	"github.com/brane-app/tools-library/middleware"
 	"github.com/gastrodon/groudon/v2"
 
 	"os"

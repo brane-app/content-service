@@ -1,8 +1,8 @@
 package main
 
 import (
-	"git.gastrodon.io/imonke/monkebase"
-	"git.gastrodon.io/imonke/monketype"
+	"github.com/brane-app/database-library"
+	"github.com/brane-app/types-library"
 
 	"bytes"
 	"context"
@@ -21,7 +21,7 @@ const (
 )
 
 var (
-	user     monketype.User
+	user     types.User
 	token    string
 	pngBytes []byte = []byte{
 		0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, // png file header
@@ -40,7 +40,7 @@ func ferroDelete(url string) (err error) {
 
 }
 
-func newOk(test *testing.T, content monketype.Content) {
+func newOk(test *testing.T, content types.Content) {
 	if content.LikeCount != 0 {
 		test.Errorf("Too many likes! %d", content.LikeCount)
 	}
@@ -113,20 +113,20 @@ func mustMarshal(it map[string]interface{}) (data []byte) {
 }
 
 func TestMain(main *testing.M) {
-	monkebase.Connect(os.Getenv("DATABASE_CONNECTION"))
-	user = monketype.NewUser(nick, "", email)
+	database.Connect(os.Getenv("DATABASE_CONNECTION"))
+	user = types.NewUser(nick, "", email)
 
 	var err error
-	if err = monkebase.WriteUser(user.Map()); err != nil {
+	if err = database.WriteUser(user.Map()); err != nil {
 		panic(err)
 	}
 
-	if token, _, err = monkebase.CreateToken(user.ID); err != nil {
+	if token, _, err = database.CreateToken(user.ID); err != nil {
 		panic(err)
 	}
 
 	var result int = main.Run()
-	monkebase.DeleteUser(user.ID)
+	database.DeleteUser(user.ID)
 	os.Exit(result)
 }
 
@@ -193,9 +193,9 @@ func Test_postContent(test *testing.T) {
 			test.Errorf("got code %d", code)
 		}
 
-		var content monketype.Content
+		var content types.Content
 		var ok bool
-		if content, ok = r_map["content"].(monketype.Content); !ok {
+		if content, ok = r_map["content"].(types.Content); !ok {
 			test.Errorf("%#v", r_map)
 		}
 

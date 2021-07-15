@@ -1,9 +1,9 @@
 package main
 
 import (
-	"git.gastrodon.io/imonke/monkebase"
-	"git.gastrodon.io/imonke/monketype"
-	"github.com/gastrodon/groudon"
+	"github.com/brane-app/database-library"
+	"github.com/brane-app/types-library"
+	"github.com/gastrodon/groudon/v2"
 	"github.com/google/uuid"
 
 	"bytes"
@@ -104,7 +104,7 @@ func multipartReader(form *multipart.Form, key string) (reader io.Reader, ok boo
 	return
 }
 
-func makeContent(data, file io.Reader, author string) (created monketype.Content, ok bool, err error) {
+func makeContent(data, file io.Reader, author string) (created types.Content, ok bool, err error) {
 	var body CreateContentBody
 	var external error
 	if err, external = groudon.SerializeBody(data, &body); err != nil || external != nil {
@@ -132,7 +132,7 @@ func makeContent(data, file io.Reader, author string) (created monketype.Content
 		return
 	}
 
-	created = monketype.NewContent(
+	created = types.NewContent(
 		file_url,
 		author,
 		mime,
@@ -141,7 +141,7 @@ func makeContent(data, file io.Reader, author string) (created monketype.Content
 		body.NSFW,
 	)
 
-	err = monkebase.WriteContent(created.Map())
+	err = database.WriteContent(created.Map())
 	ok = true
 	return
 }
@@ -162,7 +162,7 @@ func postContent(request *http.Request) (code int, r_map map[string]interface{},
 		return
 	}
 
-	var created monketype.Content
+	var created types.Content
 	var author string = request.Context().Value("requester").(string)
 	created, ok, err = makeContent(data, file, author)
 
@@ -176,6 +176,6 @@ func postContent(request *http.Request) (code int, r_map map[string]interface{},
 		r_map = map[string]interface{}{"content": created}
 	}
 
-	go monkebase.IncrementPostCount(author)
+	go database.IncrementPostCount(author)
 	return
 }
