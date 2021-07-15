@@ -35,7 +35,7 @@ func contentOK(test *testing.T, content, target monketype.Content) {
 
 func TestMain(main *testing.M) {
 	content = monketype.NewContent("", id, "png", nil, true, true)
-	monkebase.Connect(os.Getenv("MONKEBASE_CONNECTION"))
+	monkebase.Connect(os.Getenv("DATABASE_CONNECTION"))
 
 	var result int = main.Run()
 	monkebase.DeleteContent(content.ID)
