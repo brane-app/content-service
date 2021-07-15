@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/google/uuid"
-	"git.gastrodon.io/imonke/monkebase"
-	"git.gastrodon.io/imonke/monketype"
+	"github.com/brane-app/database-library"
+	"github.com/brane-app/types-library"
 
 	"net/http"
 	"os"
@@ -11,11 +11,11 @@ import (
 )
 
 var (
-	content monketype.Content
+	content types.Content
 	id      string = uuid.New().String()
 )
 
-func contentOK(test *testing.T, content, target monketype.Content) {
+func contentOK(test *testing.T, content, target types.Content) {
 	if content.ID != target.ID {
 		test.Errorf("content id mismatch! have: %s, want: %s", content.ID, target.ID)
 	}
@@ -34,11 +34,11 @@ func contentOK(test *testing.T, content, target monketype.Content) {
 }
 
 func TestMain(main *testing.M) {
-	content = monketype.NewContent("", id, "png", nil, true, true)
-	monkebase.Connect(os.Getenv("DATABASE_CONNECTION"))
+	content = types.NewContent("", id, "png", nil, true, true)
+	database.Connect(os.Getenv("DATABASE_CONNECTION"))
 
 	var result int = main.Run()
-	monkebase.DeleteContent(content.ID)
+	database.DeleteContent(content.ID)
 	os.Exit(result)
 }
 
@@ -46,9 +46,9 @@ func Test_getContent(test *testing.T) {
 	var author, file_url, mime string = uuid.New().String(), "foobar", "png"
 	var tags []string = []string{"foo", "bar"}
 
-	var content monketype.Content = monketype.NewContent(file_url, author, mime, tags, false, false)
+	var content types.Content = types.NewContent(file_url, author, mime, tags, false, false)
 	var err error
-	if err = monkebase.WriteContent(content.Map()); err != nil {
+	if err = database.WriteContent(content.Map()); err != nil {
 		test.Fatal(err)
 	}
 
@@ -67,8 +67,8 @@ func Test_getContent(test *testing.T) {
 		test.Errorf("got code %d", code)
 	}
 
-	var fetched monketype.Content = monketype.Content{}
-	if fetched, err = monketype.ContentFromMap(r_map["content"].(map[string]interface{})); err != nil {
+	var fetched types.Content = types.Content{}
+	if fetched, err = types.ContentFromMap(r_map["content"].(map[string]interface{})); err != nil {
 		test.Fatal(err)
 	}
 

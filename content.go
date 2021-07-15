@@ -1,8 +1,8 @@
 package main
 
 import (
-	"git.gastrodon.io/imonke/monkebase"
-	"git.gastrodon.io/imonke/monketype"
+	"github.com/brane-app/database-library"
+	"github.com/brane-app/types-library"
 
 	"net/http"
 	"strings"
@@ -17,9 +17,9 @@ func getContent(request *http.Request) (code int, r_map map[string]interface{}, 
 	var parts []string = strings.FieldsFunc(request.URL.Path, pathSplit)
 	var id string = parts[len(parts)-1]
 
-	var fetched monketype.Content
+	var fetched types.Content
 	var exists bool
-	if fetched, exists, err = monkebase.ReadSingleContent(id); err != nil {
+	if fetched, exists, err = database.ReadSingleContent(id); err != nil {
 		return
 	}
 
