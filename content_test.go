@@ -11,7 +11,6 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/textproto"
-	"os"
 	"testing"
 )
 
@@ -112,8 +111,7 @@ func mustMarshal(it map[string]interface{}) (data []byte) {
 	return
 }
 
-func TestMain(main *testing.M) {
-	database.Connect(os.Getenv("DATABASE_CONNECTION"))
+func setup(main *testing.M) {
 	user = types.NewUser(nick, "", email)
 
 	var err error
@@ -124,10 +122,6 @@ func TestMain(main *testing.M) {
 	if token, _, err = database.CreateToken(user.ID); err != nil {
 		panic(err)
 	}
-
-	var result int = main.Run()
-	database.DeleteUser(user.ID)
-	os.Exit(result)
 }
 
 func Test_postContent(test *testing.T) {
