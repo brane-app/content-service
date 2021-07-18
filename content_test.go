@@ -1,12 +1,11 @@
 package main
 
 import (
-	"github.com/google/uuid"
 	"github.com/brane-app/database-library"
 	"github.com/brane-app/types-library"
+	"github.com/google/uuid"
 
 	"net/http"
-	"os"
 	"testing"
 )
 
@@ -33,13 +32,8 @@ func contentOK(test *testing.T, content, target types.Content) {
 	}
 }
 
-func TestMain(main *testing.M) {
+func setup(main *testing.M) {
 	content = types.NewContent("", id, "png", nil, true, true)
-	database.Connect(os.Getenv("DATABASE_CONNECTION"))
-
-	var result int = main.Run()
-	database.DeleteContent(content.ID)
-	os.Exit(result)
 }
 
 func Test_getContent(test *testing.T) {
