@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/brane-app/database-library v0.0.0-20211110231631-033b51a2e204
 	github.com/brane-app/types-library v0.0.0-20211110231636-03a77b845231
-	github.com/gastrodon/groudon/v2 v2.3.0
+	github.com/gastrodon/groudon/v2 v2.3.1
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
 	github.com/google/uuid v1.3.0
 	github.com/jmoiron/sqlx v1.3.4 // indirect
