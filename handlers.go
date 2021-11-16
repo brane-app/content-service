@@ -1,7 +1,10 @@
 package main
 
 import (
-	"github.com/brane-app/tools-library/middleware"
+	"github.com/brane-app/content-service/handlers"
+	"github.com/brane-app/content-service/middleware"
+
+	tools_middleware "github.com/brane-app/tools-library/middleware"
 	"github.com/gastrodon/groudon/v2"
 
 	"os"
@@ -18,10 +21,10 @@ var (
 func register_handlers() {
 	groudon.AddCodeResponse(401, bad_auth)
 
-	groudon.AddMiddleware("POST", rootRoute, middleware.MustAuth)
-	groudon.AddMiddleware("POST", rootRoute, middleware.RejectBanned)
-	groudon.AddMiddleware("POST", rootRoute, middleware.ParseMultipart)
-	groudon.AddMiddleware("POST", rootRoute, transformBase64)
+	groudon.AddMiddleware("POST", rootRoute, tools_middleware.MustAuth)
+	groudon.AddMiddleware("POST", rootRoute, tools_middleware.RejectBanned)
+	groudon.AddMiddleware("POST", rootRoute, tools_middleware.ParseMultipart)
+	groudon.AddMiddleware("POST", rootRoute, middleware.TransformBase64)
 
-	groudon.AddHandler("POST", rootRoute, postContent)
+	groudon.AddHandler("POST", rootRoute, handlers.PostContent)
 }

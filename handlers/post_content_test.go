@@ -1,7 +1,6 @@
-package main
+package handlers
 
 import (
-	"github.com/brane-app/database-library"
 	"github.com/brane-app/types-library"
 
 	"bytes"
@@ -20,8 +19,6 @@ const (
 )
 
 var (
-	user     types.User
-	token    string
 	pngBytes []byte = []byte{
 		0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, // png file header
 		104, 97, 104, 97, 32, 121, 101, 115, 32, 73, 32, 97, 109, 32, 97, 32, 112, 110, 103, // haha yes I am a png
@@ -111,20 +108,7 @@ func mustMarshal(it map[string]interface{}) (data []byte) {
 	return
 }
 
-func setup(main *testing.M) {
-	user = types.NewUser(nick, "", email)
-
-	var err error
-	if err = database.WriteUser(user.Map()); err != nil {
-		panic(err)
-	}
-
-	if token, _, err = database.CreateToken(user.ID); err != nil {
-		panic(err)
-	}
-}
-
-func Test_postContent(test *testing.T) {
+func Test_PostContent(test *testing.T) {
 	var set []byte
 	var sets [][]byte = [][]byte{
 		mustMarshal(map[string]interface{}{
@@ -179,7 +163,7 @@ func Test_postContent(test *testing.T) {
 		))
 		request.ParseMultipartForm(4 << 2)
 
-		if code, r_map, err = postContent(request); err != nil {
+		if code, r_map, err = PostContent(request); err != nil {
 			test.Fatal(err)
 		}
 
@@ -202,7 +186,7 @@ func Test_postContent(test *testing.T) {
 	}
 }
 
-func Test_postContent_badrequest(test *testing.T) {
+func Test_PostContent_badrequest(test *testing.T) {
 	var set []byte
 	var sets [][]byte = [][]byte{
 		[]byte("Why do they call him Donkey Kong if he's a gorilla"),
@@ -222,7 +206,7 @@ func Test_postContent_badrequest(test *testing.T) {
 		))
 		request.ParseMultipartForm(4 << 20)
 
-		if code, _, err = postContent(request); err != nil {
+		if code, _, err = PostContent(request); err != nil {
 			test.Fatal(err)
 		}
 

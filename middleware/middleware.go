@@ -1,4 +1,4 @@
-package main
+package middleware
 
 import (
 	"github.com/brane-app/tools-library/middleware"
@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func transformBase64(request *http.Request) (modified *http.Request, ok bool, code int, r_map map[string]interface{}, err error) {
+func TransformBase64(request *http.Request) (modified *http.Request, ok bool, code int, r_map map[string]interface{}, err error) {
 	var values []string
 	var exists bool
 	if values, exists = request.MultipartForm.Value["file_base64"]; !exists || len(values) == 0 {

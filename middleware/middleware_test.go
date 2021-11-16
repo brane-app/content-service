@@ -1,4 +1,4 @@
-package main
+package middleware
 
 import (
 	"bytes"
@@ -33,7 +33,7 @@ func Test_transformBase64(test *testing.T) {
 	var request *http.Request
 	var ok bool
 	var err error
-	if request, ok, _, _, err = transformBase64(mustLocalBase64(pngBase64)); err != nil {
+	if request, ok, _, _, err = TransformBase64(mustLocalBase64(pngBase64)); err != nil {
 		test.Fatal(err)
 	}
 
@@ -64,7 +64,7 @@ func Test_transformBase64_badFile(test *testing.T) {
 	var ok bool
 	var code int
 	var err error
-	if _, ok, code, _, err = transformBase64(mustLocalBase64("=")); err != nil {
+	if _, ok, code, _, err = TransformBase64(mustLocalBase64("=")); err != nil {
 		test.Fatal(err)
 	}
 
