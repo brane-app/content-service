@@ -13,9 +13,9 @@ const (
 var (
 	prefix = os.Getenv("PATH_PREFIX")
 
-	rootRoute = "^" + prefix + "/" + uuid_regex + "/?$"
+	routeContent = "^" + prefix + "/" + uuid_regex + "/?$"
 )
 
 func register_handlers() {
-	groudon.AddHandler("GET", rootRoute, getContent)
+	groudon.AddHandler("GET", routeContent, getContent)
 }
