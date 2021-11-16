@@ -1,4 +1,4 @@
-module github.com/brane-app/content-create-service
+module github.com/brane-app/content-service
 
 go 1.13
 
