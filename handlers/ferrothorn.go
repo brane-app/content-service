@@ -16,6 +16,7 @@ import (
 
 var (
 	ferrothorn_host               = strings.TrimSuffix(os.Getenv("FERROTHORN_HOST"), "/")
+	ferrothorn_mask               = strings.TrimSuffix(os.Getenv("FERROTHORN_MASK"), "/")
 	ferrothorn_secret             = os.Getenv("FERROTHORN_SECRET")
 	noFerrothorn                  = os.Getenv("NO_FERROTHORN") == "true"
 	requester         http.Client = http.Client{}
@@ -79,7 +80,11 @@ func upload(file io.Reader) (url string, err error) {
 
 	var response map[string]string
 	if response, err = ferroRequest(sendable); err == nil {
-		url = ferrothorn_host + "/" + response["id"]
+		if ferrothorn_mask != "" {
+			url = ferrothorn_mask + "/" + response["id"]
+		} else {
+			url = ferrothorn_host + "/" + response["id"]
+		}
 	}
 
 	return
