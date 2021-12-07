@@ -6,6 +6,7 @@ import (
 	"github.com/google/uuid"
 
 	"net/http"
+	"strings"
 	"testing"
 )
 
@@ -33,6 +34,14 @@ func contentOK(test *testing.T, content, target types.Content) {
 }
 
 func Test_GetContent(test *testing.T) {
+	backupHost := ferrothorn_host
+
+	defer func() {
+		ferrothorn_host = backupHost
+	}()
+
+	ferrothorn_host = "host"
+
 	var author, file_url, mime string = uuid.New().String(), "foobar", "png"
 	var tags []string = []string{"foo", "bar"}
 
@@ -62,7 +71,55 @@ func Test_GetContent(test *testing.T) {
 		test.Fatal(err)
 	}
 
-	_ = fetched
+	if !strings.HasPrefix(fetched.FileURL, ferrothorn_host+"/") {
+		test.Fatalf("%s is missing prefix %s", fetched.FileURL, ferrothorn_host)
+	}
+}
+
+func Test_GetContent_Masked(test *testing.T) {
+	backupHost := ferrothorn_host
+	backupMask := ferrothorn_mask
+
+	defer func() {
+		ferrothorn_host = backupHost
+		ferrothorn_mask = backupMask
+	}()
+
+	ferrothorn_host = "host"
+	ferrothorn_mask = "mask"
+
+	var author, file_url, mime string = uuid.New().String(), "foobar", "png"
+	var tags []string = []string{"foo", "bar"}
+
+	var content types.Content = types.NewContent(file_url, author, mime, tags, false, false)
+	var err error
+	if err = database.WriteContent(content.Map()); err != nil {
+		test.Fatal(err)
+	}
+
+	var request *http.Request
+	if request, err = http.NewRequest("GET", "/"+content.ID, nil); err != nil {
+		test.Fatal(err)
+	}
+
+	var code int
+	var r_map map[string]interface{}
+	if code, r_map, err = GetContent(request); err != nil {
+		test.Fatal(err)
+	}
+
+	if code != 200 {
+		test.Errorf("got code %d", code)
+	}
+
+	var fetched types.Content = types.Content{}
+	if fetched, err = types.ContentFromMap(r_map["content"].(map[string]interface{})); err != nil {
+		test.Fatal(err)
+	}
+
+	if !strings.HasPrefix(fetched.FileURL, ferrothorn_mask+"/") {
+		test.Fatalf("%s has wrong prefix", fetched.FileURL)
+	}
 }
 
 func Test_GetContent_notfound(test *testing.T) {

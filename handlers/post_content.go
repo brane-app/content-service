@@ -57,13 +57,13 @@ func makeContent(data, file io.Reader, author string) (created library_types.Con
 		return
 	}
 
-	var file_url string
-	if file_url, err = upload(&file_tee); err != nil {
+	var file_id string
+	if file_id, err = upload(&file_tee); err != nil {
 		return
 	}
 
 	created = library_types.NewContent(
-		file_url,
+		file_id,
 		author,
 		mime,
 		body.Tags,

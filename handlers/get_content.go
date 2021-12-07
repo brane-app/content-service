@@ -29,8 +29,16 @@ func GetContent(request *http.Request) (code int, r_map map[string]interface{}, 
 	}
 
 	code = 200
+
+	content := fetched.Map()
+	if ferrothorn_mask != "" {
+		content["file_url"] = ferrothorn_mask + "/" + fetched.FileURL
+	} else {
+		content["file_url"] = ferrothorn_host + "/" + fetched.FileURL
+	}
+
 	r_map = map[string]interface{}{
-		"content": fetched.Map(),
+		"content": content,
 	}
 	return
 }

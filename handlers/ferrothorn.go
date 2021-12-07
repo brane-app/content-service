@@ -80,11 +80,7 @@ func upload(file io.Reader) (url string, err error) {
 
 	var response map[string]string
 	if response, err = ferroRequest(sendable); err == nil {
-		if ferrothorn_mask != "" {
-			url = ferrothorn_mask + "/" + response["id"]
-		} else {
-			url = ferrothorn_host + "/" + response["id"]
-		}
+		url = response["id"]
 	}
 
 	return
