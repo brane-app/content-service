@@ -4,7 +4,7 @@ import (
 	"github.com/brane-app/content-service/handlers"
 	"github.com/brane-app/content-service/middleware"
 
-	tools_middleware "github.com/brane-app/tools-library/middleware"
+	tools_middleware "github.com/brane-app/librane/tools/middleware"
 	"github.com/gastrodon/groudon/v2"
 
 	"os"
